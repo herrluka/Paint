@@ -1,11 +1,13 @@
-package Stek;
+package painting;
 
 import java.awt.Color;
+import java.awt.Frame;
 import java.awt.Graphics;
 
 public class Line extends Shape {
 	private Point startPoint;
 	private Point endPoint;
+	private Color col;
 	
 	public Line() {
 		
@@ -23,7 +25,13 @@ public class Line extends Shape {
 
 	@Override
 	public void draw(Graphics g) {
+		if(this.col!=null)
+			g.setColor(this.col);
+		else
+			g.setColor(Color.BLACK);
 		g.drawLine(this.getStartPoint().getX(), getStartPoint().getY(), this.getEndPoint().getX(), this.getEndPoint().getY());
+		g.setColor(Color.BLACK);
+		
 		
 		if (isSelected()) {
 			g.setColor(Color.BLUE);
@@ -42,37 +50,10 @@ public class Line extends Shape {
 		return p;
 	}
 	
-	
-	public int compareTo(Object o) {
-		if (o instanceof Line) {
-			return (int) (this.length() - ((Line) o).length());
-		}
-		return 0;
-	}
-	
-	@Override
-	public void moveBy(int byX, int byY) {
-		startPoint.moveBy(byX, byY);
-		endPoint.moveBy(byX, byY);
-	}
 	public boolean contains(Point p) {
 		if((startPoint.distance(p.getX(), p.getY()) + endPoint.distance(p.getX(), p.getY())) - length() <= 0.05)
 			return true;
 		return false;
-	}
-	
-	public boolean equals(Object obj) {
-		if (obj instanceof Line) {
-			Line l = (Line) obj;
-			if (this.startPoint.equals(l.getStartPoint()) &&
-					this.endPoint.equals(l.getEndPoint())) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
 	}
 	
 	public double length() {
@@ -91,7 +72,15 @@ public class Line extends Shape {
 	public void setEndPoint(Point endPoint) {
 		this.endPoint = endPoint;
 	}
-	
+
+	public Color getCol() {
+		return col;
+	}
+
+	public void setCol(Color col) {
+		this.col = col;
+	}
+
 	public String toString() {
 		return startPoint + "-->" + endPoint;
 	}

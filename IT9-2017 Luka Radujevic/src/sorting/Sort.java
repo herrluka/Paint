@@ -1,4 +1,4 @@
-package Stek;
+package sorting;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -55,26 +55,23 @@ public class Sort extends JFrame {
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Rectangle pravougaonik=new Rectangle();
-				dijalogPravougaonik dija= new dijalogPravougaonik();
+				DialogRectangle dija= new DialogRectangle();
 				dija.setLblOpcionoTxt("Unesite obelezja pravougaonika?");
 				dija.setVisible(true);
 				if(dija.isOk())
 				{
 				try {
-				pravougaonik.setUpperLeftPoint(new Point(Integer.parseInt((dija.getTxtXKoordinata().getText())),Integer.parseInt(dija.getTxtYKoordinata().getText())));
-				pravougaonik.setWidth(Integer.parseInt(dija.getTxtSirina().getText()));
-				pravougaonik.setHeight(Integer.parseInt(dija.getTxtVisina().getText()));
+				pravougaonik.setUpperLeftPoint(new Point(Integer.parseInt((dija.getTxtXKoordinata())),Integer.parseInt(dija.getTxtYKoordinata())));
+				pravougaonik.setWidth(Integer.parseInt(dija.getTxtSirina()));
+				pravougaonik.setHeight(Integer.parseInt(dija.getTxtVisina()));
 				dlm.addElement(pravougaonik);
 				}
-				catch(NullPointerException e) {
-					JOptionPane.showMessageDialog(new JFrame(),"Proverite da li su sva polja popunjena.", "Greška!", JOptionPane.ERROR_MESSAGE);
-				}
 				catch(NumberFormatException e) {
-					JOptionPane.showMessageDialog(new JFrame(),"Uneli ste pogresan tip podataka.", "Greška!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"Neispravan unos. Proverite da li su sva polja popunjena brojnim vrednostima.", "Greška!", JOptionPane.ERROR_MESSAGE);
 				}
 				catch(Exception e)
 				{
-					//DOPUNITI
+					JOptionPane.showMessageDialog(new JFrame(),"Visina i sirina moraju da budu pozitivne.", "Greška!", JOptionPane.ERROR_MESSAGE);
 				}
 				}
 			}
@@ -88,7 +85,7 @@ public class Sort extends JFrame {
 				{
 					pomList.add(i,dlm.getElementAt(i));
 				}
-				for(int i=1;i<pomList.size()-1;i++) {
+				for(int i=1;i<=pomList.size()-1;i++) {
 					for(int j=0;j<pomList.size()-1;j++) {
 						if(pomList.get(j).area()>pomList.get(j+1).area()) {
 							Rectangle pom=pomList.get(j);

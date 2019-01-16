@@ -1,34 +1,43 @@
-package Stek;
+package sorting;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
+import javax.swing.JColorChooser;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import org.w3c.dom.css.Rect;
+
 import java.awt.GridBagLayout;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
-public class dijalogPravougaonik extends JDialog {
+public class DialogRectangle extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
+	private JTextField txtXKoordinata;
 	private JTextField txtYKoordinata;
 	private JTextField txtVisina;
 	private JTextField txtSirina;
 	private boolean ok;
-	private boolean closed;
-	private JTextField txtXKoordinata;
 	private JLabel lblXKoordinata;
 	private JLabel lblYKoordinata;
 	private JLabel lblVisina;
@@ -37,76 +46,13 @@ public class dijalogPravougaonik extends JDialog {
 	private JButton cancelButton;
 	private JLabel lblOpciono;
 	
-	public void setLblOpcionoTxt(String text) {
-		lblOpciono.setText(text);
-	}
 	
-	public boolean isClosed() {
-		return closed;
-	}
-
-
-	public void setClosed(boolean closed) {
-		this.closed = closed;
-	}
-
-
-	public JTextField getTxtXKoordinata() {
-		return txtXKoordinata;
-	}
-
-
-	public void setTxtXKoordinata(String s) {
-		this.txtXKoordinata.setText(s);
-	}
-
-
-	public boolean isOk() {
-		return ok;
-	}
-
-
-	public void setOk(boolean ok) {
-		this.ok = ok;
-	}
-
-
-	public JTextField getTxtYKoordinata() {
-		return txtYKoordinata;
-	}
-
-
-	public void setTxtYKoordinata(String s) {
-		this.txtYKoordinata.setText(s);;
-	}
-
-
-	public JTextField getTxtVisina() {
-		return txtVisina;
-	}
-
-
-	public void setTxtVisina(String broj) {
-		this.txtVisina.setText(broj);
-	}
-
-
-	public JTextField getTxtSirina() {
-		return txtSirina;
-	}
-
-
-	public void setTxtSirina(String broj) {
-		this.txtSirina.setText(broj);;
-	}
-
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			dijalogPravougaonik dialog = new dijalogPravougaonik();
+			DialogRectangle dialog = new DialogRectangle();
 			dialog.setTitle("Pravougaonik");
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
@@ -119,9 +65,9 @@ public class dijalogPravougaonik extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public dijalogPravougaonik() {
+	public DialogRectangle() {
 		setTitle("Rectangle");
-		setBounds(100, 100, 802, 508);
+		setBounds(100, 100, 680, 508);
 		getContentPane().setLayout(new BorderLayout());
 		this.setModal(true);
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -138,6 +84,17 @@ public class dijalogPravougaonik extends JDialog {
 			txtXKoordinata.setColumns(10);
 		}
 		
+		txtXKoordinata.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+					if (c=='-') {
+						e.consume();
+						getToolkit().beep();
+					}
+			}
+		});
+		
 		{
 			lblYKoordinata = new JLabel("Y koordinata");
 			lblYKoordinata.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -147,6 +104,17 @@ public class dijalogPravougaonik extends JDialog {
 			txtYKoordinata.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			txtYKoordinata.setColumns(10);
 		}
+		
+		txtYKoordinata.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+					if (c=='-') {
+						e.consume();
+						getToolkit().beep();
+					}
+			}
+		});
 		{
 			lblVisina = new JLabel("Visina");
 			lblVisina.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -176,7 +144,6 @@ public class dijalogPravougaonik extends JDialog {
 				.addGroup(gl_contentPanel.createSequentialGroup()
 					.addGap(32)
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
-						.addComponent(lblOpciono)
 						.addGroup(gl_contentPanel.createSequentialGroup()
 							.addGroup(gl_contentPanel.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblXKoordinata)
@@ -188,8 +155,10 @@ public class dijalogPravougaonik extends JDialog {
 								.addComponent(txtSirina)
 								.addComponent(txtYKoordinata, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
 								.addComponent(txtXKoordinata, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)
-								.addComponent(txtVisina, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE))))
-					.addContainerGap(363, Short.MAX_VALUE))
+								.addComponent(txtVisina, GroupLayout.DEFAULT_SIZE, 225, Short.MAX_VALUE)))
+						.addGroup(gl_contentPanel.createSequentialGroup()
+							.addComponent(lblOpciono)
+							.addContainerGap(738, Short.MAX_VALUE))))
 		);
 		gl_contentPanel.setVerticalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -212,7 +181,7 @@ public class dijalogPravougaonik extends JDialog {
 					.addGroup(gl_contentPanel.createParallelGroup(Alignment.BASELINE)
 						.addComponent(txtSirina, GroupLayout.PREFERRED_SIZE, 35, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblSirina, GroupLayout.PREFERRED_SIZE, 47, GroupLayout.PREFERRED_SIZE))
-					.addGap(139))
+					.addContainerGap(125, Short.MAX_VALUE))
 		);
 		contentPanel.setLayout(gl_contentPanel);
 		{
@@ -222,9 +191,24 @@ public class dijalogPravougaonik extends JDialog {
 				okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
+						try
+						{
+							Rectangle pravougaonik=new Rectangle();
+							pravougaonik.setUpperLeftPoint(new Point(Integer.parseInt((getTxtXKoordinata())),Integer.parseInt(getTxtYKoordinata())));
+							pravougaonik.setWidth(Integer.parseInt(getTxtSirina()));
+							pravougaonik.setHeight(Integer.parseInt(getTxtVisina()));
+							int i=Integer.parseInt(getTxtXKoordinata());
+							int j=Integer.parseInt(getTxtYKoordinata());
 						ok=true;
-						closed=true;
 						dispose();
+						}
+						catch(NumberFormatException e) {
+							JOptionPane.showMessageDialog(new JFrame(),"Neispravan unos. Proverite da li su sva polja popunjena brojnim vrednostima.", "Greška!", JOptionPane.ERROR_MESSAGE);
+						}
+						catch(Exception e)
+						{
+							JOptionPane.showMessageDialog(new JFrame(),"Visina i sirina moraju da budu pozitivne.", "Greška!", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -235,7 +219,6 @@ public class dijalogPravougaonik extends JDialog {
 				cancelButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent arg0) {
 						ok=false;
-						closed=true;
 						dispose();
 					}
 				});
@@ -245,11 +228,11 @@ public class dijalogPravougaonik extends JDialog {
 			gl_buttonPane.setHorizontalGroup(
 				gl_buttonPane.createParallelGroup(Alignment.LEADING)
 					.addGroup(gl_buttonPane.createSequentialGroup()
-						.addGap(610)
+						.addGap(476)
 						.addComponent(okButton, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
-						.addGap(3)
+						.addPreferredGap(ComponentPlacement.UNRELATED)
 						.addComponent(cancelButton, GroupLayout.DEFAULT_SIZE, 80, Short.MAX_VALUE)
-						.addContainerGap())
+						.addGap(122))
 			);
 			gl_buttonPane.setVerticalGroup(
 				gl_buttonPane.createParallelGroup(Alignment.LEADING)
@@ -265,4 +248,78 @@ public class dijalogPravougaonik extends JDialog {
 			
 		}
 	}
+	
+	public void setTxtXKoordinataEnabled(boolean b)
+	{
+		this.txtXKoordinata.setEnabled(b);
+	}
+	
+	public void setTxtYKoordinataEnabled(boolean b)
+	{
+		this.txtYKoordinata.setEnabled(b);
+	}
+	
+	public void setTxtVisinaEnabled(boolean b)
+	{
+		this.txtVisina.setEnabled(b);
+	}
+	
+	public void setTxtSirinaEnabled(boolean b)
+	{
+		this.txtSirina.setEnabled(b);
+	}
+	public void setLblOpcionoTxt(String text) {
+		lblOpciono.setText(text);
+	}
+	
+	public String getTxtXKoordinata() {
+		return txtXKoordinata.getText();
+	}
+
+
+	public void setTxtXKoordinata(String s) {
+		this.txtXKoordinata.setText(s);
+	}
+
+
+	public boolean isOk() {
+		return ok;
+	}
+
+
+	public void setOk(boolean ok) {
+		this.ok = ok;
+	}
+
+
+	public String getTxtYKoordinata() {
+		return txtYKoordinata.getText();
+	}
+
+
+	public void setTxtYKoordinata(String s) {
+		this.txtYKoordinata.setText(s);;
+	}
+
+
+	public String getTxtVisina() {
+		return txtVisina.getText();
+	}
+
+
+	public void setTxtVisina(String broj) {
+		this.txtVisina.setText(broj);
+	}
+
+
+	public String getTxtSirina() {
+		return txtSirina.getText();
+	}
+
+
+	public void setTxtSirina(String broj) {
+		this.txtSirina.setText(broj);;
+	}
+
+
 }

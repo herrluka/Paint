@@ -1,4 +1,4 @@
-package Stek;
+package stack;
 
 
 import java.awt.Dialog;
@@ -19,6 +19,7 @@ import javax.swing.DefaultListModel;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.lang.invoke.CallSite;
+import java.util.Iterator;
 import java.awt.event.ActionEvent;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
@@ -76,26 +77,25 @@ JScrollPane scrlPanePravougaonici = new JScrollPane();
 		btnDodaj.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				Rectangle pravougaonik=new Rectangle();
-				dijalogPravougaonik dija= new dijalogPravougaonik();
-				dija.setLblOpcionoTxt("Unesite obelezja pravougaonika?");
+				DialogRectangle dija= new DialogRectangle();
+				dija.setLblUnesiteirinuI("Unesite obelezja pravougaonika:");
 				dija.setVisible(true);
 				if(dija.isOk())
 				{
 				try {
-				pravougaonik.setUpperLeftPoint(new Point(Integer.parseInt((dija.getTxtXKoordinata().getText())),Integer.parseInt(dija.getTxtYKoordinata().getText())));
-				pravougaonik.setWidth(Integer.parseInt(dija.getTxtSirina().getText()));
-				pravougaonik.setHeight(Integer.parseInt(dija.getTxtVisina().getText()));
+				pravougaonik.setUpperLeftPoint(new Point(Integer.parseInt((dija.getTextKoordX())),Integer.parseInt(dija.getTextKoordY())));
+				pravougaonik.setWidth(Integer.parseInt(dija.getTextSirina()));
+				pravougaonik.setHeight(Integer.parseInt(dija.getTextVisina()));
 				dlm.add(0,pravougaonik);
 				}
-				catch(NullPointerException e) {
-					JOptionPane.showMessageDialog(new JFrame(),"Proverite da li su sva polja popunjena.", "Greška!", JOptionPane.ERROR_MESSAGE);
-				}
 				catch(NumberFormatException e) {
-					JOptionPane.showMessageDialog(new JFrame(),"Uneli ste pogresan tip podataka.", "Greška!", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(new JFrame(),"Neispravan unos. Proverite da li su sva polja ispunjena brojnim vrednostima.", "Greška!", JOptionPane.ERROR_MESSAGE);
+					actionPerformed(arg0);
 				}
 				catch(Exception e)
 				{
-					
+					JOptionPane.showMessageDialog(new JFrame(),"Visina i sirina moraju da budu pozitivni brojevi.", "Greška!", JOptionPane.ERROR_MESSAGE);
+					actionPerformed(arg0);
 				}
 				}
 				
@@ -109,27 +109,27 @@ JScrollPane scrlPanePravougaonici = new JScrollPane();
 		btnIzuzmi.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-				Rectangle pravougaonik=(Rectangle) list.getSelectedValue();
-				dijalogPravougaonik dlg=new dijalogPravougaonik();
-				dlg.setLblOpcionoTxt("Da li ste sigurni da zelite da obrisete pravougaonik sa ovim obelezjima?");
-				dlg.setTxtXKoordinata(Integer.toString(pravougaonik.getUpperLeftPoint().getX()));
-				dlg.setTxtYKoordinata(Integer.toString(pravougaonik.getUpperLeftPoint().getY()));
-				dlg.setTxtVisina(Integer.toString(pravougaonik.getHeight()));
-				dlg.setTxtSirina(Integer.toString(pravougaonik.getWidth()));
+				Rectangle pravougaonik=dlm.getElementAt(0);
+				DialogRectangle dlg=new DialogRectangle();
+				dlg.setLblUnesiteirinuI("Da li ste sigurni da zelite da obrisete pravougaonik sa ovim obelezjima?");
+				dlg.setTextKoordX(Integer.toString(pravougaonik.getUpperLeftPoint().getX()));
+				dlg.setTextKoordY(Integer.toString(pravougaonik.getUpperLeftPoint().getY()));
+				dlg.setTextVisina(Integer.toString(pravougaonik.getHeight()));
+				dlg.setTextSirina(Integer.toString(pravougaonik.getWidth()));
+				dlg.setTextKoordXEditable(false);
+				dlg.setTextKoordYEditable(false);
+				dlg.setTextVisinaEditable(false);
+				dlg.setTextSirinaEditable(false);
 				dlg.setVisible(true);
 				if(dlg.isOk())
 				{
 					dlm.removeElement(pravougaonik);
 				}
 				}
-				catch(ClassCastException e)
-				{
-					JOptionPane.showMessageDialog(new JFrame(), "Problem prilikom kastovanja.", "Greska", JOptionPane.WARNING_MESSAGE);
+				catch (ArrayIndexOutOfBoundsException e) {
+					JOptionPane.showMessageDialog(new JFrame(), "Stek je prazan.", "Greska", JOptionPane.WARNING_MESSAGE);
 				}
-				catch(NullPointerException e) {
-					JOptionPane.showMessageDialog(new JFrame(), "Niste selektovali nijednu vrednost u listi.", "Greska", JOptionPane.WARNING_MESSAGE);
-				}
-				//catch konvert gresku
+				
 			}
 		});
 		btnIzuzmi.setFont(new Font("Tahoma", Font.PLAIN, 17));

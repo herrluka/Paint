@@ -1,4 +1,4 @@
-package Stek;
+package stack;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -17,56 +17,27 @@ import java.awt.Font;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.JTextField;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.ActionEvent;
 
-public class pravougaonikDijalog extends JDialog {
+public class DialogRectangle extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textKoordX;
 	private JTextField textKoordY;
 	private JTextField textVisina;
 	private JTextField textSirina;
+	JLabel lblUnesiteirinuI;
 	private boolean ok;
+
 	
-
-	public String getTextKoordX() {
-		return textKoordX.getText();
-	}
-
-	public void setTextKoordX(String textKoordX) {
-		this.textKoordX.setText(textKoordX);
-	}
-
-	public String getTextKoordY() {
-		return textKoordY.getText();
-	}
-
-	public void setTextKoordY(String textKoordY) {
-		this.textKoordY.setText(textKoordY);
-	}
-
-	public String getTextVisina() {
-		return textVisina.getText();
-	}
-
-	public String getTextSirina() {
-		return textSirina.getText();
-	}
-
-	public boolean isOk() {
-		return ok;
-	}
-
-	public void setOk(boolean ok) {
-		this.ok = ok;
-	}
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		try {
-			pravougaonikDijalog dialog = new pravougaonikDijalog();
+			DialogRectangle dialog = new DialogRectangle();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -77,7 +48,7 @@ public class pravougaonikDijalog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public pravougaonikDijalog() {
+	public DialogRectangle() {
 		setBounds(100, 100, 640, 408);
 		getContentPane().setLayout(new BorderLayout());
 		this.setModal(true);
@@ -97,14 +68,34 @@ public class pravougaonikDijalog extends JDialog {
 		lblSirina.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		
 		textKoordX = new JTextField();
-		textKoordX.setEditable(false);
 		textKoordX.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textKoordX.setColumns(10);
 		
+		textKoordX.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+					if (c=='-') {
+						e.consume();
+						getToolkit().beep();
+					}
+			}
+		});
+		
 		textKoordY = new JTextField();
-		textKoordY.setEditable(false);
 		textKoordY.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textKoordY.setColumns(10);
+		
+		textKoordY.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char c = e.getKeyChar();
+					if (c=='-') {
+						e.consume();
+						getToolkit().beep();
+					}
+			}
+		});
 		
 		textVisina = new JTextField();
 		textVisina.setFont(new Font("Tahoma", Font.PLAIN, 20));
@@ -114,7 +105,7 @@ public class pravougaonikDijalog extends JDialog {
 		textSirina.setFont(new Font("Tahoma", Font.PLAIN, 20));
 		textSirina.setColumns(10);
 		
-		JLabel lblUnesiteirinuI = new JLabel("Unesite \u0161irinu i visinu pravougaonika");
+		lblUnesiteirinuI = new JLabel("Unesite \u0161irinu i visinu pravougaonika");
 		GroupLayout gl_contentPanel = new GroupLayout(contentPanel);
 		gl_contentPanel.setHorizontalGroup(
 			gl_contentPanel.createParallelGroup(Alignment.LEADING)
@@ -168,8 +159,23 @@ public class pravougaonikDijalog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
+						try {
+						Rectangle r=new Rectangle();
+						r.setUpperLeftPoint(new Point(Integer.parseInt(getTextKoordX()),Integer.parseInt(getTextKoordY())));
+						r.setWidth(Integer.parseInt(getTextSirina()));
+						r.setHeight(Integer.parseInt(getTextVisina()));
+						int i=Integer.parseInt(getTextKoordX());
+						int j=Integer.parseInt(getTextKoordY());
 						setOk(true);
 						dispose();
+						}
+						catch(NumberFormatException ex) {
+							JOptionPane.showMessageDialog(new JFrame(),"Neispravan unos. Proverite da li su sva polja ispunjena brojnim vrednostima.", "Greška!", JOptionPane.ERROR_MESSAGE);
+						}
+						catch(Exception ex)
+						{
+							JOptionPane.showMessageDialog(new JFrame(),"Visina i sirina moraju da budu pozitivni brojevi.", "Greška!", JOptionPane.ERROR_MESSAGE);
+						}
 					}
 				});
 				okButton.setActionCommand("OK");
@@ -188,4 +194,68 @@ public class pravougaonikDijalog extends JDialog {
 			}
 		}
 	}
+	public void setLblUnesiteirinuI(String lblUnesiteirinuI) {
+		this.lblUnesiteirinuI.setText(lblUnesiteirinuI);
+	}
+
+	public void setTextVisina(String textVisina) {
+		this.textVisina.setText(textVisina);
+	}
+
+	public void setTextSirina(String textSirina) {
+		this.textSirina.setText(textSirina);
+	}
+
+	public String getTextKoordX() {
+		return textKoordX.getText();
+	}
+
+	public void setTextKoordX(String textKoordX) {
+		this.textKoordX.setText(textKoordX);
+	}
+
+	public String getTextKoordY() {
+		return textKoordY.getText();
+	}
+
+	public void setTextKoordY(String textKoordY) {
+		this.textKoordY.setText(textKoordY);
+	}
+
+	public String getTextVisina() {
+		return textVisina.getText();
+	}
+
+	public String getTextSirina() {
+		return textSirina.getText();
+	}
+
+	public boolean isOk() {
+		return ok;
+	}
+
+	public void setOk(boolean ok) {
+		this.ok = ok;
+	}
+	
+	public void setTextKoordXEditable(boolean b)
+	{
+		this.textKoordX.setEditable(b);
+	}
+	
+	public void setTextKoordYEditable(boolean b)
+	{
+		this.textKoordY.setEditable(b);
+	}
+	
+	public void setTextVisinaEditable(boolean b)
+	{
+		this.textVisina.setEditable(b);
+	}
+	
+	public void setTextSirinaEditable(boolean b)
+	{
+		this.textSirina.setEditable(b);
+	}
+
 }

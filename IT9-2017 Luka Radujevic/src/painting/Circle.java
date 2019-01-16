@@ -1,29 +1,48 @@
-package Stek;
+package painting;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
 public class Circle extends Shape {
 	private Point center;
 	private int radius;
+	private Color bojaUnut;
+	private Color bojaIvice;
+
+	
 	
 	public Circle() {
 
 	}
 
-	public Circle(Point center, int radius) {
-		this.center = center;
-		this.radius = radius;
+	public Circle(Point center, int radius) throws Exception {
+		setCenter(center);
+		setRadius(radius);
 	}
 
-	public Circle(Point center, int radius, boolean selected) {
+	public Circle(Point center, int radius, boolean selected) throws Exception {
 		this(center, radius);
 		setSelected(selected);
 	}
 
 	@Override
 	public void draw(Graphics g) {
+		
+		if(bojaUnut!=null)
+		{
+			g.setColor(bojaUnut);
+			g.fillOval(this.getCenter().getX() - this.radius, getCenter().getY() - getRadius(), this.getRadius()*2, this.getRadius()*2);
+		}
+		if(bojaIvice!=null)
+		g.setColor(bojaIvice);
+		else
+			g.setColor(Color.BLACK);
 		g.drawOval(this.getCenter().getX() - this.radius, getCenter().getY() - getRadius(), this.getRadius()*2, this.getRadius()*2);
+		g.setColor(Color.BLACK);
+		
 		
 		if (isSelected()) {
 			g.setColor(Color.BLUE);
@@ -35,42 +54,11 @@ public class Circle extends Shape {
 			g.setColor(Color.BLACK);
 		}
 	}
-
-	@Override
-	public void moveBy(int byX, int byY) {
-		center.moveBy(byX, byY);
 		
-	}
-	
-	
-	public int compareTo(Object o) {
-		if (o instanceof Circle) {
-			return (this.radius - ((Circle) o).radius);
-		}
-		return 0;
-	}
-	
 	public boolean contains(Point p) {
 		return center.distance(p.getX(), p.getY()) <= radius;
 	}
-	
-	public boolean equals(Object obj) {
-		if (obj instanceof Circle) {
-			Circle c = (Circle) obj;
-			if (this.center.equals(c.getCenter()) && this.radius == c.getRadius()) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-	
-	public double area() {
-		return radius * radius * Math.PI;
-	}
-	
+
 	public Point getCenter() {
 		return center;
 	}
@@ -84,7 +72,23 @@ public class Circle extends Shape {
 		if(radius>=0)
 			this.radius = radius;
 		else
-			throw new Exception("Vrednost poluprecnika ne moze da bude negativan broj");
+			throw new Exception();
+	}
+	
+	public Color getBojaUnut() {
+		return bojaUnut;
+	}
+
+	public void setBojaUnut(Color bojaUnut) {
+		this.bojaUnut = bojaUnut;
+	}
+
+	public Color getBojaIvice() {
+		return bojaIvice;
+	}
+
+	public void setBojaIvice(Color bojaIvice) {
+		this.bojaIvice = bojaIvice;
 	}
 	
 	public String toString() {
