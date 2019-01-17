@@ -315,10 +315,9 @@ public class Drawing extends JFrame {
 					{
 						lista.remove(index);
 						panel.setOblik(lista);
+						panel.setTestOblik(null); 
+						panel.repaint();
 					}
-					panel.setTestOblik(null); 
-					panel.repaint();
-					
 				}
 				else
 				{
