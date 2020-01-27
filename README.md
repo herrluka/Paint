@@ -1,2 +1,1 @@
-# JavaPrimeri
-Druga godina, objektno programiranje
+Draw basic geometric shapes
